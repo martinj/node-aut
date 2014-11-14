@@ -1,3 +1,5 @@
+[![Build Status](https://travis-ci.org/martinj/node-aut.svg)](https://travis-ci.org/martinj/node-aut)
+
 # aut
 
 Simple logging library with filtering using environment variables
