@@ -1,0 +1,17 @@
+{
+	"plugins": [
+		"mocha"
+	],
+	"extends": "@aptoma/eslint-config",
+	"rules": {
+		"object-curly-spacing": ["error", "always"]
+	},
+	"parserOptions": {
+		"ecmaVersion": 9
+	},
+	"env": {
+		"node": true,
+		"mocha": true,
+		"es6": true
+	}
+}

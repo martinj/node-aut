@@ -2,19 +2,19 @@
 process.env.NODE_ENV = 'test';
 require('should');
 
-describe('aut', function () {
-	it('should add custom levels', function () {
-		var log = require('../')({
+describe('aut', () => {
+	it('should add custom levels', () => {
+		const log = require('../')({
 			levels: ['foo']
 		});
 
 		log.foo.should.be.a.Function;
 	});
 
-	it('should format output', function (done) {
-		var log = require('../')('test', {
-			date: function () { return 'Date'; },
-			write: function (str) {
+	it('should format output', (done) => {
+		const log = require('../')('test', {
+			date: () => 'Date',
+			write(str) {
 				str.should.equal('\u001b[90mDate\u001b[39m test - foobar');
 				done();
 			}
@@ -23,8 +23,8 @@ describe('aut', function () {
 		log('foo%s', 'bar');
 	});
 
-	it('should filter names', function () {
-		var log = require('../')({
+	it('should filter names', () => {
+		let log = require('../')({
 			nameFilter: '*,-log2'
 		});
 
@@ -40,8 +40,8 @@ describe('aut', function () {
 		log.enabled('log3').should.be.false;
 	});
 
-	it('should filter levels', function () {
-		var log = require('../')({
+	it('should filter levels', () => {
+		let log = require('../')({
 			levelFilter: '*,-warn'
 		});
 		log.enabled(undefined, 'debug').should.be.true;
