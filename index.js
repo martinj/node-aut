@@ -1,11 +1,12 @@
 'use strict';
-var moment = require('moment'),
-	inspect = require('util').inspect,
-	printf = require('util').format,
-	colors = require('colors');
 
-var emptyFn = function () {},
-	useColor = Boolean(process.stdout.isTTY);
+const moment = require('moment');
+const inspect = require('util').inspect;
+const printf = require('util').format;
+const colors = require('colors');
+
+const emptyFn = function () {};
+const useColor = Boolean(process.stdout.isTTY);
 
 colors.setTheme({
 	error: 'red',
@@ -28,8 +29,8 @@ function parseFilter(type, keys, enable, skip) {
 	}
 	enable.all[type] = false;
 
-	var split = keys.split(/[\s,]+/);
-	split.forEach(function (key) {
+	const split = keys.split(/[\s,]+/);
+	split.forEach((key) => {
 		if (!key) {
 			return;
 		}
@@ -97,7 +98,7 @@ function date() {
  * @param  {String} msg
  */
 function write(msg) {
-	console.log.apply(console, [msg]);
+	console.log(msg);
 }
 
 /**
@@ -106,7 +107,7 @@ function write(msg) {
  * @return {String}
  */
 function format(data) {
-	var args = Array.prototype.slice.call(data.args, 0).map(function (arg) {
+	const args = data.args.map((arg) => {
 		if (arg instanceof Error) {
 			return arg.stack;
 		}
@@ -117,9 +118,9 @@ function format(data) {
 		return arg;
 	});
 
-	var msg = printf.apply(printf, args),
-		fmt = ['%s'],
-		vals = [colorize('grey', data.date)];
+	const msg = printf.apply(printf, args);
+	const fmt = ['%s'];
+	const vals = [colorize('grey', data.date)];
 
 	if (data.name) {
 		fmt.push('%s');
@@ -149,40 +150,40 @@ function format(data) {
  * @return {Function}
  */
 function log(name, opts) {
-	if (typeof(name) === 'object') {
+	if (typeof (name) === 'object') {
 		opts = name;
 		name = undefined;
 	} else {
 		opts = opts || {};
 	}
 
-	var dateFn = opts.date || date,
-		formatFn = opts.format || format,
-		writeFn = opts.write || write,
-		levels = ['error', 'warn', 'info', 'debug'].concat(opts.levels || []),
-		enable = { all: {}, name: {}, level: {} },
-		skip = { name: {}, level: {} };
+	const dateFn = opts.date || date;
+	const formatFn = opts.format || format;
+	const writeFn = opts.write || write;
+	const levels = ['error', 'warn', 'info', 'debug'].concat(opts.levels || []);
+	const enable = { all: {}, name: {}, level: {} };
+	const skip = { name: {}, level: {} };
 
 	parseFilter('name', opts.nameFilter || process.env.LOGNAMES, enable, skip);
 	parseFilter('level', opts.levelFilter || process.env.LOGLEVELS, enable, skip);
 
-	var logger = function (level) {
+	const logger = function (level) {
 		if (!enabled(name, level, enable, skip)) {
 			return emptyFn;
 		}
-		return function () {
+		return (...args) => {
 			writeFn(formatFn({
 				date: dateFn(),
 				name: name,
-				args: arguments,
+				args: args || [],
 				level: level
 			}));
 		};
 	};
 
-	var fn = logger();
+	const fn = logger();
 
-	levels.forEach(function (level) {
+	levels.forEach((level) => {
 		fn[level] = logger(level);
 	});
 
@@ -195,7 +196,6 @@ function log(name, opts) {
 	return fn;
 }
 
-
 module.exports = function (name, opts) {
- 	return log(name, opts);
+	return log(name, opts);
 };

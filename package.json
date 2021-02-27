@@ -4,8 +4,9 @@
   "description": "Simple logging library with filtering using environment variables",
   "main": "index.js",
   "scripts": {
-    "test": "jshint test/ index.js && istanbul test --preload-sources _mocha -- -u exports -R spec 'test/**/*.test.js'",
-    "ci": "npm test --coverage && istanbul report cobertura",
+    "lint": "eslint --ext '.js' index.js test",
+    "watch": "mocha --watch 'test/**/*.js' 'index.js' --timeout 500",
+    "test": "npm run lint && nyc --reporter=text-summary --reporter=lcov mocha",
     "release": "npm test && release-it -n -i patch",
     "release:minor": "npm test && release-it -n -i minor",
     "release:major": "npm test && release-it -n -i major"
@@ -13,6 +14,9 @@
   "repository": {
     "type": "git",
     "url": "https://github.com/martinj/node-aut"
+  },
+  "engines": {
+    "node": ">=12.0.0"
   },
   "keywords": [
     "log",
@@ -25,14 +29,16 @@
   },
   "homepage": "https://github.com/martinj/node-aut",
   "dependencies": {
-    "colors": "^1.0.3",
-    "moment": "^2.8.3"
+    "colors": "^1.4.0",
+    "moment": "^2.29.1"
   },
   "devDependencies": {
-    "istanbul": "^0.3.2",
-    "jshint": "^2.5.6",
-    "mocha": "^1.21.4",
-    "release-it": "0.0.11",
-    "should": "^4.0.4"
+    "@aptoma/eslint-config": "^7.0.1",
+    "eslint": "^7.20.0",
+    "eslint-plugin-mocha": "^8.0.0",
+    "mocha": "^8.3.0",
+    "nyc": "^15.1.0",
+    "release-it": "^14.4.1",
+    "should": "^13.2.3"
   }
 }
