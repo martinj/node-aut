@@ -1,6 +1,6 @@
 {
   "name": "aut",
-  "version": "0.1.0",
+  "version": "1.0.0",
   "description": "Simple logging library with filtering using environment variables",
   "main": "index.js",
   "scripts": {

@@ -1,0 +1,8 @@
+{
+	"pkgFiles": [
+		"package.json"
+	],
+	"git": {
+		"requireCleanWorkingDir": false
+	}
+}
